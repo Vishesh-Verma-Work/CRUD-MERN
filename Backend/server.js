@@ -1,10 +1,11 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const user = require("./models/userModel")
 require('dotenv').config();
 
 app.use(express.json());
+
+const router = require("./routes/userRoute");
 
 
 mongoose.connect(process.env.MONGO_URL)
@@ -15,7 +16,7 @@ mongoose.connect(process.env.MONGO_URL)
     });
   }
 ).catch((err)=>{
-    console.llog(err);
+    console.log(err);
   })
 
 
@@ -23,20 +24,4 @@ app.get('/', (req,res)=>{
     res.send("Backend is on");
 });
 
-
-// create api 
-
-app.post("/", async (req,res)=>{
-    const {name,email,age} = req.body;
-    try{
-        const userAdded = await user.create({
-            name : name,
-            email : email,
-            age : age
-        })
-        res.status(201).json(userAdded);
-    }
-    catch(error){
-        res.status(400).json({error:error.message});
-    }
-})
+app.use(router);

@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     age : {
         type : Number
     }
-});
+}, {timestamps:true});
 
 const user = mongoose.model('user', userSchema);
 module.exports = user;
