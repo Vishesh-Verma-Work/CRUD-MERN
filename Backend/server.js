@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 const user = require("./models/userModel")
 require('dotenv').config();
 
+app.use(express.json());
+
+
 mongoose.connect(process.env.MONGO_URL)
   .then(() => {
     console.log('Connected!')
@@ -20,3 +23,20 @@ app.get('/', (req,res)=>{
     res.send("Backend is on");
 });
 
+
+// create api 
+
+app.post("/", async (req,res)=>{
+    const {name,email,age} = req.body;
+    try{
+        const userAdded = await user.create({
+            name : name,
+            email : email,
+            age : age
+        })
+        res.status(201).json(userAdded);
+    }
+    catch(error){
+        res.status(400).json({error:error.message});
+    }
+})
