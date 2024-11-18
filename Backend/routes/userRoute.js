@@ -39,7 +39,7 @@ router.get("/all", async (req,res)=>{
 router.get("/:id", async (req,res)=>{
     const {id} = req.params;
     try{
-        const data = await user.findById(id);
+        const data = await user.findById({_id : id});
         res.status(201).json(data);
     }catch(error){
         res.status(400).json({error:error.message});
@@ -51,10 +51,22 @@ router.get("/:id", async (req,res)=>{
 router.delete("/:id", async (req,res)=>{
     const {id} = req.params;
     try{
-        const deletedData = await user.findByIdAndDelete(id);
+        const deletedData = await user.findByIdAndDelete({_id : id});
         res.status(201).json(deletedData);
     }catch(error){
         res.status(400).json({error:error.message});
+    }
+})
+
+//updating the data
+router.patch("/:id", async (req,res)=>{
+    const {id} = req.params;
+    const {name,email,age} = req.body;
+    try{
+        const updatedData = await user.findByIdAndUpdate(id, req.body, {new : true});
+        res.status(201).json(updatedData);
+    }catch(error){
+        res.status(500).json({error:error.message});
     }
 })
 
