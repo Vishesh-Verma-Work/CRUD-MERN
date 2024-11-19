@@ -9,6 +9,12 @@
     font-family: Arial, sans-serif;
   }
   
+  .formSubmit {
+    padding: 2rem 28rem;
+    border-radius: .5rem;
+    background-color: rgb(192, 255, 192);
+    color: black;
+  }
   /* Title Styling */
   .create-title {
     font-size: 2rem;

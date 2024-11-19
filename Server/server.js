@@ -5,6 +5,10 @@ require('dotenv').config();
 
 app.use(express.json());
 
+//cors fix
+const cors = require('cors');
+app.use(cors()); 
+
 const router = require("./routes/userRoute");
 
 

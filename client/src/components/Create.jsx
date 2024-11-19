@@ -5,27 +5,49 @@ const Create = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [age, setAge] = useState(0);
+  const [done, setDone] = useState(false);
 
-  const putData = async ()=>{
-    const {name,email,age} = fetch("http://localhost:3000",{
+  const putData = async (e)=>{
+    e.preventDefault();
+    const userData = {name,email,age};
+    const response = await fetch("http://localhost:5000",{
       method : "POST",
-      
-      headers : {
-        
+      body : JSON.stringify(userData),
+      headers :{
+        "Content-Type" : "application/json",
       }
-    })
+    });
+
+    const result = await response.json();
+    console.log(response);
+    if(!response.ok){
+      console.log(result);
+      setName("")
+      setEmail("")
+      setAge(0)
+      tgl();
+      
+    }
+
+    //false
+    if(response.ok){
+      console.log(result.error);
+    }
   }
 
-  {
-    console.log(name);
-    console.log(email);
-    console.log(age);
+  const tgl = ()=>{
+    done ? setDone(false)  :setDone(true);
   }
+
+  
 
   return (
     <div className="create-container">
+      {
+        done ? <div className="formSubmit">Your form has been <b>successfully submitted</b>! Thank you!</div> : <></>
+      }
       <h2 className="create-title">Create User</h2>
-      <form className="create-form">
+      <form className="create-form"  onSubmit={putData}>
 
         <div className="form-group">
           <label htmlFor="name">Name</label>
@@ -42,7 +64,7 @@ const Create = () => {
           <input type="number" name="age" min={0} max={100} placeholder="Enter your age" value={age} onChange={(e)=>{setAge(e.target.value)}}/>
         </div>
 
-        <button type="submit" className="create-submit" onSubmit={putData}>Submit</button>
+        <button type="submit" className="create-submit">Submit</button>
 
       </form>
     </div>
